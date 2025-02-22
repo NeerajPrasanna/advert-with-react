@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Image Scroller</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .scroller-container {
+            height: 100%;
+            margin: auto;
+            width: 40vw;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background: #f3f3f3;
+            padding: 10px 0;
+        }
+
+        .scroller {
+            display: flex;
+            gap: 10px;
+            animation: scroll 10s linear infinite;
+            animation-delay: 5s;
+        }
+
+        .scroller img {
+            width: 40vw;
+            height: 80vh;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scroller-container">
+        <div class="scroller" id="scroller">
+            <img src="https://study.com/cimages/multimages/16/burgerad15179945781952220614.png" alt="Image 1">
+            <img src="https://i.pinimg.com/236x/11/8e/cd/118ecdbcdcd3fd1cdb18a2b4f32f2524.jpg" alt="Image 2">
+            <img src="https://c8.alamy.com/comp/D0JXYP/original-1950s-vintage-print-advertisement-from-english-magazine-advertising-D0JXYP.jpg"
+                alt="Image 3">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const scroller = document.getElementById("scroller");
+            const images = scroller.innerHTML;
+            scroller.innerHTML += images; // Duplicate images for infinite effect
+        });
+    </script>
+</body>
+
+</html>
