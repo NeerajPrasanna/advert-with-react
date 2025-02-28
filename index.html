@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatic Image Scroller</title>
+    <title>Image Carousel</title>
     <style>
         * {
             margin: 0;
@@ -12,59 +12,114 @@
             box-sizing: border-box;
         }
 
-        .scroller-container {
-            height: 100%;
-            margin: auto;
-            width: 40vw;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            background: #f3f3f3;
-            padding: 10px 0;
-        }
-
-        .scroller {
+        body {
             display: flex;
-            gap: 10px;
-            animation: scroll 10s linear infinite;
-            animation-delay: 5s;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f3f3f3;
         }
 
-        .scroller img {
-            width: 40vw;
+        .carousel-container {
+            width: 50vw;
             height: 80vh;
-            object-fit: cover;
+            position: relative;
+            overflow: hidden;
             border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            background: white;
         }
 
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
+        .carousel {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s ease-in-out;
+        }
 
-            }
+        .carousel img {
+            max-height: 80vh;
+            width: 100%;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
 
-            100% {
-                transform: translateX(-100%);
-            }
+        /* Navigation Buttons */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            z-index: 10;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
         }
     </style>
 </head>
 
 <body>
-    <div class="scroller-container">
-        <div class="scroller" id="scroller">
-            <img src="https://study.com/cimages/multimages/16/burgerad15179945781952220614.png" alt="Image 1">
-            <img src="https://i.pinimg.com/236x/11/8e/cd/118ecdbcdcd3fd1cdb18a2b4f32f2524.jpg" alt="Image 2">
+    <div class="carousel-container">
+
+        <div class="carousel" id="carousel">
+            <img src="https://study.com/cimages/multimages/16/burgerad15179945781952220614.png" alt="Ad 1">
+            <img src="https://i.pinimg.com/236x/11/8e/cd/118ecdbcdcd3fd1cdb18a2b4f32f2524.jpg" alt="Ad 2">
             <img src="https://c8.alamy.com/comp/D0JXYP/original-1950s-vintage-print-advertisement-from-english-magazine-advertising-D0JXYP.jpg"
-                alt="Image 3">
+                alt="Ad 3">
         </div>
+
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const scroller = document.getElementById("scroller");
-            const images = scroller.innerHTML;
-            scroller.innerHTML += images; // Duplicate images for infinite effect
+            const carousel = document.getElementById("carousel");
+            let images = Array.from(carousel.children);
+            let currentIndex = 0;
+            let interval;
+
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+
+            function nextImage() {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateCarousel();
+            }
+
+            function prevImage() {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateCarousel();
+            }
+
+            function startAutoScroll() {
+                interval = setInterval(nextImage, 3000);
+            }
+
+            function stopAutoScroll() {
+                clearInterval(interval);
+            }
+
+            // Start auto-scroll
+            startAutoScroll();
+
+            // Pause auto-scroll when hovering
+            document.querySelector(".carousel-container").addEventListener("mouseenter", stopAutoScroll);
+            document.querySelector(".carousel-container").addEventListener("mouseleave", startAutoScroll);
         });
     </script>
 </body>
